@@ -3,6 +3,10 @@ name: QA Agent
 on:
   workflow_dispatch:
 
+  repository_dispatch:
+    types:
+      - run-qa
+
   schedule:
     - cron: '0 15 * * *'
 
