@@ -18,34 +18,17 @@ test('happy path: register y login', async ({ page }) => {
   await page.fill('#password', password);
   await page.fill('#confirmPassword', password);
 
-  console.log('Email:', await page.locator('#email').inputValue());
-  console.log('Password:', await page.locator('#password').inputValue());
-  console.log('Confirm:', await page.locator('#confirmPassword').inputValue());
-
   await page.screenshot({
     path: 'before-submit.png',
     fullPage: true,
   });
 
-  console.log(
-    'Antes click:',
-    await page.locator('#email').inputValue()
-  );
-
   await page.waitForTimeout(1000);
-
-  console.log(
-    '1 segundo después:',
-    await page.locator('#email').inputValue()
-  );
 
   await page.click('button[type="submit"]');
 
   await page.waitForTimeout(3000);
 
-
-
-  console.log('URL after submit:', await page.url());
 
   await expect(page).toHaveURL(/login/);
 
