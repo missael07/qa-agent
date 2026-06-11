@@ -8,12 +8,24 @@ test('happy path: register y login', async ({ page }) => {
 
     await page.goto(`${baseUrl}/register`);
 
-    await page.fill('input[name="email"]', email);
-    await page.fill('input[name="password"]', password);
-    await page.fill('input[name="confirmPassword"]', password);
-    await page.click('button[type="submit"]');
+    await page.fill('#email', email);
+    await page.fill('#password', password);
+    await page.fill('#confirmPassword', password);
+
+    console.log('Email:', await page.locator('#email').inputValue());
+    console.log('Password:', await page.locator('#password').inputValue());
+    console.log('Confirm:', await page.locator('#confirmPassword').inputValue());
+
+    await page.screenshot({
+        path: 'before-submit.png',
+        fullPage: true,
+    });
 
     await page.click('button[type="submit"]');
+
+    await page.waitForTimeout(2000);
+
+    console.log('URL after submit:', await page.url());
 
     await expect(page).toHaveURL(/login/);
 
