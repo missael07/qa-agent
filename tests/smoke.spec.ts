@@ -13,9 +13,10 @@ test('happy path: register y login', async ({ page }) => {
     await page.fill('input[name="confirmPassword"]', password);
     await page.click('button[type="submit"]');
 
-    await expect(page).not.toHaveURL(/register/);
+    await page.click('button[type="submit"]');
 
-    await page.goto(`${baseUrl}/login`);
+    await expect(page).toHaveURL(/login/);
+
     await page.fill('input[name="email"]', email);
     await page.fill('input[name="password"]', password);
     await page.click('button[type="submit"]');
