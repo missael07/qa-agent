@@ -41,3 +41,21 @@ jobs:
         with:
           name: qa-report
           path: playwright-report/
+
+  create-pr:
+    needs: qa
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create Pull Request staging to master
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.NUXT_REPO_TOKEN }}" \
+            https://api.github.com/repos/missael07/nuxt-qa-demo/pulls \
+            -d '{
+              "title": "Promote staging to master after QA passed",
+              "head": "staging",
+              "base": "master",
+              "body": "QA Agent passed successfully. This PR promotes staging to master."
+            }'
