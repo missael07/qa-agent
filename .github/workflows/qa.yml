@@ -2,11 +2,6 @@ name: QA Agent
 
 on:
   workflow_dispatch:
-    inputs:
-      base_url:
-        description: 'URL a probar'
-        required: true
-        default: 'https://tuweb.com'
 
   schedule:
     - cron: '0 15 * * *'
@@ -15,27 +10,28 @@ jobs:
   qa:
     runs-on: ubuntu-latest
 
+    env:
+      BASE_URL: https://staging--loginqaangent.netlify.app
+
     steps:
-      - name: Descargar código
+      - name: Checkout QA Agent
         uses: actions/checkout@v4
 
-      - name: Instalar Node
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Instalar dependencias
+      - name: Install dependencies
         run: npm ci
 
-      - name: Instalar navegadores
+      - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
-      - name: Ejecutar agente QA
+      - name: Run QA Tests
         run: npx playwright test
-        env:
-          BASE_URL: ${{ github.event.inputs.base_url || 'https://tuweb.com' }}
 
-      - name: Subir reporte
+      - name: Upload QA Report
         if: always()
         uses: actions/upload-artifact@v4
         with:

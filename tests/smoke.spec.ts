@@ -41,13 +41,8 @@ console.log(
 
     await page.click('button[type="submit"]');
 
-    await page.waitForTimeout(2000);
 
     console.log('URL after submit:', await page.url());
-
-
-    await page.waitForTimeout(8000);
-
 
     await expect(page).toHaveURL(/login/);
 
